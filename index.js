@@ -19,8 +19,7 @@ app.use(express.json());
 app.use(cookieParser());
 // Enable CORS
 app.use(cors({
-  origin: "https://manojbhattarai7.com.np/",
-  credentials: true
+  origin: "*"
 }));
 
 
