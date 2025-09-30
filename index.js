@@ -21,16 +21,22 @@ app.use(cookieParser());
 
 // CORS Setup
 const allowedOrigins = [
-  "https://manojbhattarai7.com.np",
-  "http://127.0.0.1:5500"
+  "https://manojbhattarai7.com.np", // live frontend
+  "http://127.0.0.1:5500"           // local testing
 ];
 
 app.use(cors({
-  origin: "http://127.0.0.1:5500",
+  origin: function(origin, callback){
+    // allow requests with no origin (Postman, mobile apps)
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.includes(origin)){
+      return callback(null, true);
+    } else {
+      return callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true
 }));
-
-
 
 // Routes
 app.use('/api/website/enquiry', enquiryInsert);
@@ -44,9 +50,9 @@ app.use('/api/website/content', listrouter);
 mongoose.connect(process.env.dburl)
     .then(() => {
         console.log("MongoDB connected");
-        const port = process.env.port || 8050;
+        const port = process.env.PORT || 8050; // use capital PORT for Render
         app.listen(port, () => {
-            console.log(`Server running at http://localhost:${port}`);
+            console.log(`Server running on port ${port}`);
         });
     })
-    .catch(err => console.error(err));
+    .catch(err => console.error("MongoDB connection error:", err));
