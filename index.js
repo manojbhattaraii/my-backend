@@ -14,26 +14,23 @@ import listrouter from './app1/routes/web/listcontentRouter.js';
 dotenv.config();
 
 const app = express();
+
+// Middleware
 app.use(express.json());
 app.use(cookieParser());
 
-// Enable CORS
+// CORS Setup
 const allowedOrigins = [
-  "https://manojbhattarai7.com.np", // live frontend
-  "http://localhost:5500"            // local testing
+  "https://manojbhattarai7.com.np",
+  "http://127.0.0.1:5500"
 ];
 
 app.use(cors({
-  origin: function(origin, callback){
-    if(!origin) return callback(null, true); // allow requests with no origin (Postman, mobile apps)
-    if(!allowedOrigins.includes(origin)) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  },
+  origin: "http://127.0.0.1:5500",
   credentials: true
 }));
+
+
 
 // Routes
 app.use('/api/website/enquiry', enquiryInsert);
@@ -45,11 +42,11 @@ app.use('/api/website/content', listrouter);
 
 // Connect to MongoDB
 mongoose.connect(process.env.dburl)
-  .then(() => {
-    console.log("MongoDB connected");
-    const port = process.env.PORT || 8050;
-    app.listen(port, () => {
-      console.log(`Server running at http://localhost:${port}`);
-    });
-  })
-  .catch(err => console.error(err));
+    .then(() => {
+        console.log("MongoDB connected");
+        const port = process.env.port || 8050;
+        app.listen(port, () => {
+            console.log(`Server running at http://localhost:${port}`);
+        });
+    })
+    .catch(err => console.error(err));
