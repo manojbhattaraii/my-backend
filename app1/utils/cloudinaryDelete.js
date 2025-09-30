@@ -20,7 +20,7 @@ const deletecloudinary = async (id) => {
         };
         let publicid = getPublicIdFromUrl(id);
         const result = await cloudinary.uploader.destroy(publicid);
-        console.log("✅ Deleted from Cloudinary:", result);
+        
         return result;
     } catch (err) {
         console.error("❌ Cloudinary delete error:", err);

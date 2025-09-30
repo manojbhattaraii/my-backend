@@ -17,7 +17,7 @@ const AddContent = async (req, res) => {
             const result = await uploadOncloud(req.file.path);
             var  imglink = result.secure_url;
         } catch (err) {
-            console.error("Cloud upload failed:", err);
+            
             return res.status(500).json({ message: "Cloud upload failed", error: err.message });
         }
 
@@ -34,7 +34,7 @@ const AddContent = async (req, res) => {
 
         return res.status(201).json({ message: "Inserted successfully" });
     } catch (err) {
-        console.error("❌ AddContent Error:", err);
+        
         return res.status(500).json({ message: "Server error" });
     }
 };
